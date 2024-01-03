@@ -15,7 +15,7 @@ const UPDATE_AUTHOR = gql`
 
 const BirthYear = ({ authors }) => {
     const [name, setName] = useState('')
-    const [born, setBorn] = useState()
+    const [born, setBorn] = useState('')
     const [ updateAuthor ] = useMutation(UPDATE_AUTHOR)
 
     const submit = async (event) => {

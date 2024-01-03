@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { gql, useMutation } from '@apollo/client'
 
 const CREATE_BOOK = gql`
-  mutation createBook($title: String!, $published: Int!, $author: String!, $genres: [String!]!){
+  mutation createBook($title: String!, $published: Int!, $author: AuthorInput!, $genres: [String!]!){
     addBook (
       title: $title,
       published: $published,
@@ -11,7 +11,11 @@ const CREATE_BOOK = gql`
     ) {
       title
       published
-      author
+      author {
+        name
+        bookCount
+        born
+      }
       genres
     }
   }
@@ -34,7 +38,12 @@ const NewBook = (props) => {
     
 
     try {
-      await createBook({ variables: { title, published: parseInt(published), author, genres } })
+      await createBook({ variables: { 
+        title, 
+        published: parseInt(published), 
+        author: { name: author, born: null },
+         genres } 
+      })
       console.log('Book added successfully!')
     } catch (error) {
       console.error('Error adding book:', error)

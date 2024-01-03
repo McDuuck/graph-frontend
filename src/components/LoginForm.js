@@ -3,14 +3,19 @@ import { useMutation } from '@apollo/client'
 import { LOGIN } from '../queries'
 
 
-const LoginForm = ({ setError, setToken, show, setPage, token }) => {
+
+const LoginForm = ({ setError, setToken, show, setPage, token, }) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
     // user logins
     const [ login, result ] = useMutation(LOGIN, {
         onError: (error) => {
-            setError(error.graphQLErrors[0].message)
+            if (error.graphQLErrors && error.graphQLErrors.length > 0) {
+                setError(error.graphQLErrors[0].message)
+            } else {
+                setError("An error occurred")
+            }
         }
     })
 
@@ -20,6 +25,8 @@ const LoginForm = ({ setError, setToken, show, setPage, token }) => {
             const token = result.data.login.value
             setToken(token)
             localStorage.setItem('book-user-token', token)
+            localStorage.setItem('favoriteGenre', result.data.login.user.favoriteGenre)
+            setPage('authors')
         }
     }, [result.data])
 
