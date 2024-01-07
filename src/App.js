@@ -4,7 +4,8 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
 import Recommend from './components/Recommend'
-import { useApolloClient } from '@apollo/client'
+import { useApolloClient, useSubscription } from '@apollo/client'
+import { BOOK_ADDED } from './queries'
 
 
 
@@ -20,6 +21,13 @@ const App = () => {
     client.resetStore()
   }
 
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      console.log(data)
+      window.alert(`New book added: ${data.data.bookAdded.title}`)
+      setPage('authors')
+    }
+  })
 
   return (
     <div>

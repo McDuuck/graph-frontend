@@ -18,7 +18,6 @@ const Authors = (props) => {
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error: {error.message}</p>
   const authors = data && data.allAuthors ? data.allAuthors : []
-  console.log('authors: ', authors)
   const authorsWithoutBirthYear = authors.filter(a => a.born == null)
   if (!props.show) {
     return null
